@@ -82,7 +82,7 @@ lindow.on('message-new', async (lin) => {
                }
            }
 	       // FOR VIDEO OR GIF
-		   if ((isMedia & lin.message.videoMessage.seconds < 11 || isQuotedVideo && lin.message.extendedTextMessage.contextInfo.quotedMessage.videoMessage.seconds < 11)) {
+		   if ((isMedia & !lin.message.imageMessage || isQuotedVideo)) {
 						const encmedia = isQuotedVideo ? JSON.parse(JSON.stringify(lin).replace('quotedM','m')).message.extendedTextMessage.contextInfo : lin
 						const media = await lindow.downloadAndSaveMediaMessage(encmedia)
 						ran = getRandom('.webp')
