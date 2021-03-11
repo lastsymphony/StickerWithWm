@@ -1,6 +1,6 @@
 /**
 * Originally created by Hafizh
-* Recoded by SlavyanDesu
+* Recoded by Lindow
 **/
 const {
    WAConnection,
