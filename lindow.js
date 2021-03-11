@@ -1,6 +1,6 @@
 /**
-* Originally Created By Hafizh
-* Recoded By Lindow
+* Originally created by Hafizh
+* Recoded by SlavyanDesu
 **/
 const {
    WAConnection,
@@ -21,9 +21,8 @@ const { wait, getBuffer, h2k, generateMessageID, getRandom, banner, start, info,
 const ffmpeg = require('fluent-ffmpeg')
 const { removeBackgroundFromImageFile } = require('remove.bg')
 const { exec } = require("child_process")
-const time = moment().tz('Asia/Jakarta').format("HH:mm:ss")
-
 const lindow = new WAConnection()
+const time = moment().tz('Asia/Jakarta').format("HH:mm:ss")
 
 lindow.on('qr', qr => {
    qrcode.generate(qr, { small: true })
@@ -44,7 +43,6 @@ lindow.on('message-new', async (lin) => {
 		try {
 			if (!lin.message) return
 			if (lin.key && lin.key.remoteJid == 'status@broadcast') return
-            if (lin.key.fromMe) return
 			const content = JSON.stringify(lin.message)
 			const from = lin.key.remoteJid
 			const type = Object.keys(lin.message)[0]
@@ -53,30 +51,30 @@ lindow.on('message-new', async (lin) => {
 			const isQuotedImage = type === content.includes('imageMessage')
 			const isQuotedVideo = type === content.includes('videoMessage')
 			const isQuotedSticker = type === content.includes('stickerMessage')
-			
 		   // AUTO STICKER
+           if (lin.key.fromMe) return
 		   var Exif = require(process.cwd() + '/exif.js')
             var exif = new Exif()
             var stickerWm = (media, packname, author) => {
             ran = getRandom('.webp')
             exif.create(packname, author, from.split("@")[0])
             exec(`webpmux -set exif ./temp/${from.split("@")[0]}.exif ./${media} -o ./${ran}`, (err, stderr, stdout) => {
-            if (err) return lindow.sendMessage(from, String(err), text, {quoted: lin})
+            if (err) return lindow.sendMessage(from, String(err), text, { quoted: lin })
             lindow.sendMessage(from, fs.readFileSync(ran), sticker, {quoted: lin})
         })
     }
-    if ((isMedia && !isQuotedVideo || isQuotedImage)) {
+    if ((isMedia && !lin.message.videoMessage || isQuotedImage)) {
                var mediaEncrypt = isQuotedImage ? JSON.parse(JSON.stringify(lin).replace('quotedM','m')).message.extendedTextMessage.contextInfo : lin
                var mediaFinalys = await lindow.downloadAndSaveMediaMessage(mediaEncrypt, 'dlstikerwm')
-			   var has = 'lindow' // AUTHORNAME
-			   var kas = '@lindoww.6' // PACKNAME
+			   var has = 'lindow' // Author Name
+			   var kas = '@lindoww.6' // Pack Name
                var packageName = `${has}`
                var packageAuthor = `${kas}`
                var exifName = 'stikerwm.exif',
                    webpName = `${from.split(/@/)[0]}.webp`
                try {
                    exec(`cwebp -q 50 dlstikerwm.jpeg -o ${webpName}`, (e, stderr, stdout) => {
-                       if (e) return lindow.sendMessage(from, String(err), text, { quoted: lin })
+                       if (e) return lindow.sendMessage(from, String(stderr), text)
                            stickerWm(webpName, packageName, packageAuthor)
                    })
                } catch (e) {
@@ -84,10 +82,9 @@ lindow.on('message-new', async (lin) => {
                }
            }
 	       // FOR VIDEO OR GIF
-		   if ((isMedia && lin.message.videoMessage || isQuotedVideo && lin.message.extendedTextMessage.contextInfo.quotedMessage.videoMessage)) {
+		   if ((isMedia & lin.message.videoMessage.seconds < 11 || isQuotedVideo && lin.message.extendedTextMessage.contextInfo.quotedMessage.videoMessage.seconds < 11)) {
 						const encmedia = isQuotedVideo ? JSON.parse(JSON.stringify(lin).replace('quotedM','m')).message.extendedTextMessage.contextInfo : lin
 						const media = await lindow.downloadAndSaveMediaMessage(encmedia)
-						if (Buffer.byteLength(media) >= 6186598.4) return reply(`sizenya terlalu gede sayang, dd gakuat :(`)
 						ran = getRandom('.webp')
 						await ffmpeg(`./${media}`)
 							.inputFormat(media.split('.')[1])
@@ -98,7 +95,7 @@ lindow.on('message-new', async (lin) => {
 								console.log(`Error : ${err}`)
 								fs.unlinkSync(media)
 								tipe = media.endsWith('.mp4') ? 'video' : 'gif'
-								lindow.sendMessage(from, 'Error', MessageType.text)
+								lindow.sendMessage(from, 'error', text)
 							})
 							.on('end', function () {
 								console.log('Finish')
