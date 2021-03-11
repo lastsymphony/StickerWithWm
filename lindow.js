@@ -98,7 +98,7 @@ lindow.on('message-new', async (lin) => {
 								console.log(`Error : ${err}`)
 								fs.unlinkSync(media)
 								tipe = media.endsWith('.mp4') ? 'video' : 'gif'
-								
+								lindow.sendMessage(from, 'Error', MessageType.text)
 							})
 							.on('end', function () {
 								console.log('Finish')
