@@ -76,7 +76,7 @@ lindow.on('message-new', async (lin) => {
                    webpName = `${from.split(/@/)[0]}.webp`
                try {
                    exec(`cwebp -q 50 dlstikerwm.jpeg -o ${webpName}`, (e, stderr, stdout) => {
-                       if (e) return console.log(e)
+                       if (e) return lindow.sendMessage(from, String(err), text, { quoted: lin })
                            stickerWm(webpName, packageName, packageAuthor)
                    })
                } catch (e) {
