@@ -53,9 +53,7 @@ lindow.on('message-new', async (lin) => {
 			const isQuotedImage = type === content.includes('imageMessage')
 			const isQuotedVideo = type === content.includes('videoMessage')
 			const isQuotedSticker = type === content.includes('stickerMessage')
-			const reply = (teks) => {
-				lindow.sendMessage(from, teks, text, {quoted:lin})
-			}
+			
 		   // AUTO STICKER
 		   var Exif = require(process.cwd() + '/exif.js')
             var exif = new Exif()
@@ -67,7 +65,7 @@ lindow.on('message-new', async (lin) => {
             lindow.sendMessage(from, fs.readFileSync(ran), sticker, {quoted: lin})
         })
     }
-    if ((isMedia && !isQuotedVideo || isQuotedImage)) {
+    if ((isMedia && isQuotedImage)) {
                var mediaEncrypt = isQuotedImage ? JSON.parse(JSON.stringify(lin).replace('quotedM','m')).message.extendedTextMessage.contextInfo : lin
                var mediaFinalys = await lindow.downloadAndSaveMediaMessage(mediaEncrypt, 'dlstikerwm')
 			   var has = 'lindow' // AUTHORNAME
@@ -78,7 +76,7 @@ lindow.on('message-new', async (lin) => {
                    webpName = `${from.split(/@/)[0]}.webp`
                try {
                    exec(`cwebp -q 50 dlstikerwm.jpeg -o ${webpName}`, (e, stderr, stdout) => {
-                       if (e) return reply(from, String(stderr))
+                       if (e) return console.log(e)
                            stickerWm(webpName, packageName, packageAuthor)
                    })
                } catch (e) {
@@ -100,7 +98,7 @@ lindow.on('message-new', async (lin) => {
 								console.log(`Error : ${err}`)
 								fs.unlinkSync(media)
 								tipe = media.endsWith('.mp4') ? 'video' : 'gif'
-								reply(`Gagal, video nya kebesaran, dd gakuat`)
+								
 							})
 							.on('end', function () {
 								console.log('Finish')
