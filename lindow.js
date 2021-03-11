@@ -65,7 +65,7 @@ lindow.on('message-new', async (lin) => {
             lindow.sendMessage(from, fs.readFileSync(ran), sticker, {quoted: lin})
         })
     }
-    if ((isMedia && isQuotedImage)) {
+    if ((isMedia && !isQuotedVideo || isQuotedImage)) {
                var mediaEncrypt = isQuotedImage ? JSON.parse(JSON.stringify(lin).replace('quotedM','m')).message.extendedTextMessage.contextInfo : lin
                var mediaFinalys = await lindow.downloadAndSaveMediaMessage(mediaEncrypt, 'dlstikerwm')
 			   var has = 'lindow' // AUTHORNAME
