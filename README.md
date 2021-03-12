@@ -34,6 +34,9 @@
 * [`WhatsApp`](http://wa.me/6289513946766)
 * [`Instagram`](http://instagram.com/lindoww.6)
 
+## Join Group
+* [`My Group`](https://chat.whatsapp.com/JYb7i2b4GbICa0fk17KHOk)
+
 ## Thanks To
 * [`Baileys`](https://github.com/adiwajshing/Baileys)
 * [`Hafizh`](https://github.com/HAFizh-15)
