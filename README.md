@@ -28,7 +28,8 @@
 > scan qr
 ```
 
-* Note : Bot ini tidak menggunakan prefix seperti imgtosticker
+## Note
+* Bot ini tidak menggunakan prefix seperti imgtosticker
 
 ## My social media
 * [`WhatsApp`](http://wa.me/6289513946766)
